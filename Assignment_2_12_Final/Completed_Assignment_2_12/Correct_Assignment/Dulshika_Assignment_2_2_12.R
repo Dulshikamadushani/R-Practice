@@ -73,8 +73,107 @@ bac.even +
 bac.even + 
   geom_pwc(aes(group = Crop), method = "t_test", label = "{p.adj.format}{p.adj.signif}")
 
+water.imbibed.cor + 
+  stat_cor()
 
+water.imbibed.cor + 
+  stat_cor(label.y = 0.7) +
+  stat_regline_equation()
 
+diff.abund <- read.csv("diff_abund (1).csv")
+
+str(diff.abund)
+
+diff.abund$log10_pvalue <- -log10(diff.abund$p_CropSoybean)
+diff.abund.label <- diff.abund[diff.abund$log10_pvalue > 30,]
+
+ggplot() + 
+  geom_point(data = diff.abund, aes(x = lfc_CropSoybean, y = log10_pvalue, color = diff_CropSoybean)) + 
+  theme_classic() + 
+  geom_text_repel(data = diff.abund.label, aes(x = lfc_CropSoybean, y = log10_pvalue, color = diff_CropSoybean, label = Label))
+
+volcano <- ggplot() + 
+  geom_point(data = diff.abund, aes(x = lfc_CropSoybean, y = log10_pvalue, color = diff_CropSoybean)) + 
+  geom_text_repel(data = diff.abund.label, aes(x = lfc_CropSoybean, y = log10_pvalue, color = diff_CropSoybean, label = Label)) + 
+  scale_color_manual(values = cbbPalette, name = "Significant") +
+  theme_classic() + 
+  xlab("Log fold change Soil vs. Soybean") +
+  ylab("-log10 p-value")
+volcano
+
+volcano <- ggplot() + 
+  geom_point(data = diff.abund, aes(x = lfc_CropSoybean, y = log10_pvalue)) + 
+  geom_point(data = diff.abund.label, aes(x = lfc_CropSoybean, y = log10_pvalue), color = "red", shape = 17, size = 4) +
+  geom_text_repel(data = diff.abund.label, aes(x = lfc_CropSoybean, y = log10_pvalue, label = Label), color = "red") + 
+  theme_classic() + 
+  xlab("Log fold change Soil vs. Soybean") +
+  ylab("-log10 p-value")
+volcano
+
+library(lme4)
+library(emmeans)
+library(multcomp)
+library(multcompView)
+
+STAND <- read.csv("raw_data_valent2023_pythium_seedtreatment.csv", na.strings = "na")
+ave_stand <- STAND %>%
+  filter(days_post_planting != "173 days after planting") %>%
+  group_by(Plot, Treatment_name, Rep, days_post_planting) %>%
+  dplyr::summarize(
+    ave.stand = mean(stand, na.rm=TRUE)) 
+
+lm <- lmer(ave.stand ~ Treatment_name*days_post_planting + (1|Rep), data = ave_stand)
+car::Anova(lm)
+
+lsmeans <- emmeans(lm, ~Treatment_name|days_post_planting) # estimate lsmeans of variety within siteXyear
+Results_lsmeansEC <- multcomp::cld(lsmeans, alpha = 0.05, reversed = TRUE, details = TRUE,  Letters = letters) # contrast with Tukey ajustment
+Results_lsmeansEC
+
+library(emmeans)
+library(multcomp)
+library(multcompView)
+
+lsmeans <- emmeans(lm, ~ Treatment_name | days_post_planting)
+
+Results_lsmeansEC <- multcomp::cld(
+  lsmeans,
+  alpha = 0.05,
+  Letters = letters,
+  adjust = "tukey",
+  reversed = TRUE,
+  details = TRUE
+)
+
+Results_lsmeansEC
+
+sig.diff.letters <- data.frame(Results_lsmeansEC$emmeans$Treatment_name, 
+                               Results_lsmeansEC$emmeans$days_post_planting,
+                               str_trim(Results_lsmeansEC$emmeans$.group))
+colnames(sig.diff.letters) <- c("Treatment_name", 
+                                "days_post_planting",
+                                "Letters")
+
+# for plotting with letters from significance test
+ave_stand2 <- ave_stand %>%
+  group_by(Treatment_name, days_post_planting) %>%
+  dplyr::summarize(
+    ave.stand2 = mean(ave.stand, na.rm=TRUE),
+    se = sd(ave.stand)/sqrt(4)) %>%
+  left_join(sig.diff.letters) 
+
+ggplot(ave_stand, aes(x = Treatment_name, y = ave.stand)) + 
+  stat_summary(fun=mean,geom="bar") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.5) +
+  ylab("Number of emerged plants") + 
+  geom_jitter(width = 0.02, alpha = 0.5) +
+  geom_text(data = ave_stand2, aes(label = Letters, y = ave.stand2+(3*se)), vjust = -0.5) +
+  xlab("")+
+  theme_classic() +
+  theme(
+    strip.background = element_rect(color="white", fill="white", size=1.5, linetype="solid"),
+    strip.text.x = element_text(size = 12, color = "black"),
+    axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  facet_wrap(~days_post_planting)
 
 
 

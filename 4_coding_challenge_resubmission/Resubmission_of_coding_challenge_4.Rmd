@@ -1,0 +1,152 @@
+---
+title: "Resubmission of Coding challenge 4"
+author: "Dulshika Dassanayake"
+date: "2026-03-02"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+  md_document:
+    variant: gfm
+---
+[Noel et al. 2022, Plant Disease Paper](https://doi.org/10.1094/PDIS-06-21-1253-RE)
+
+my Github repository: 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+# Question 1
+Explain the following
+a.	YAML header
+The YAML header is the metadata block at the very top of an R Markdown file (between --- lines). It controls document settings such as the title, author(s), date, output format (HTML/PDF/Word), and options like a table of contents
+
+b.	Literate programming
+Literate programming means writing code together with explanations (in text) so the document reads like a report. In R Markdown, mix narrative text + code chunks, and when knit, the code runs and outputs (plots/tables) are embedded automatically.
+
+# Question 2a
+paperlink: (https://doi.org/10.1094/PDIS-06-21-1253-RE)
+
+# Question 2b
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(ggpubr) 
+mycotoxin<- read.csv("MycotoxinData.csv", na.strings="na")
+mycotoxin$Treatment <- as.factor(mycotoxin$Treatment) 
+mycotoxin$Cultivar <- as.factor(mycotoxin$Cultivar)
+mycotoxin$DON <- as.numeric(mycotoxin$DON)
+mycotoxin$X15ADON <- as.numeric(mycotoxin$X15ADON)
+mycotoxin$MassperSeed_mg <- as.numeric(mycotoxin$MassperSeed_mg)
+str(mycotoxin)
+```
+# Question 2c
+```{r}
+cbbPalette <- c("#56B4E9", "#009E73")
+```
+
+# DON_PLOT1 
+```{r}
+Plot1 <- ggplot(mycotoxin, aes(x = Treatment, y = DON, fill = Cultivar)) + 
+  geom_boxplot(position = position_dodge(0.85)) + 
+  xlab("") +  
+  ylab("DON (ppm)") + 
+  geom_point(alpha = 0.6,pch = 21, color = "black") + 
+  scale_fill_manual(values = cbbPalette)+ 
+  facet_wrap(~Cultivar)+  
+  theme_classic() 
+Plot1
+```
+# Plot X15ADON
+```{r}
+Plot2 <- ggplot(mycotoxin, aes(x = Treatment, y = X15ADON, fill = Cultivar)) + 
+  geom_boxplot(position = position_dodge(0.85)) +  
+  xlab("") +  
+  ylab("15ADON") +  
+  geom_point(alpha = 0.6,pch = 21, color = "black") + 
+  scale_fill_manual(values = cbbPalette)+ 
+  facet_wrap(~Cultivar)+ 
+  theme_classic() 
+Plot2
+```
+# SeedMass
+```{r}
+#Plot 3
+
+Plot3<- ggplot(mycotoxin, aes(x = Treatment, y = MassperSeed_mg, fill = Cultivar)) + 
+geom_boxplot(position = position_dodge(0.85)) +  
+  xlab("") +  
+  ylab("Seed Mass (mg)") +  
+  geom_point(alpha = 0.6,pch = 21, color = "black") + 
+  scale_fill_manual(values = cbbPalette)+ 
+  facet_wrap(~Cultivar)+ 
+  theme_classic() 
+Plot3
+```
+#3Combined_PLOT
+```{r}
+library(ggpubr)
+
+
+figure=ggarrange(Plot1,Plot2,Plot3,labels = c("A", "B", "C"),nrow = 1,ncol = 3,common.legend=TRUE)
+
+figure
+```
+#Combined_with_pairwisecomparison
+```{r}
+## Plot 1: plot1 with pairwise comparisons 
+Plot1_pwc <- Plot1 +
+  geom_pwc(aes(group = Treatment), method = "t.test", label = "p.adj.format") +  # Add pairwise t-tests
+  theme_classic()
+
+Plot1_pwc
+
+
+##Plot 2: plot2 with pairwise comparisons
+Plot2_pwc <- Plot2 +
+  geom_pwc(aes(group=Treatment), method= "t.test", label= "p.adj.format")+
+  theme_classic()
+
+Plot2_pwc
+
+##Plot 3: plot3 with pairwise comparisons
+Plot3_pwc = Plot3 + geom_pwc(aes(group=Treatment), method="t.test", label="p.adj.format")+
+  theme_classic()
+
+Plot3_pwc
+
+#Combine all three plots with a common legend ----
+Combined_pwc =ggarrange(Plot1_pwc,Plot2_pwc,Plot3_pwc,labels = c("D", "E", "F"),nrow = 1,ncol = 3,common.legend=TRUE)
+
+Combined_pwc
+
+```
+# Question5 
+README
+
+# Question 6
+Github 
+my Github repository: 
+
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

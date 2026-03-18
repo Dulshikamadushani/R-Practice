@@ -81,6 +81,6 @@ alpha_average2 %>%
 
 # GitHub
 
-my Github repository: 
+my Github repository: https://github.com/Dulshikamadushani/R-Practice/tree/main/Dulshika_Coding_challenge_5
 
 

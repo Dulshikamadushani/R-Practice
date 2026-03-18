@@ -1,0 +1,86 @@
+---
+title: "Coding Challenge 05: Data Wrangling"
+author: "Dulshika Dassanayake"
+date: "2026-03-18"
+output: 
+  pdf_document:
+    toc: true
+    number_sections: true
+  md_document:
+    variant: gfm
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Read in the two csv files using relative paths
+```{r}
+library(tidyverse)
+diversity <- read_csv("DiversityData.csv")
+metadata  <- read_csv("Metadata.csv")
+```
+# Join the two dataframes together
+```{r}
+alpha <- left_join(metadata, diversity, by = "Code")
+alpha
+```
+
+# Calculate Pielou's evenness index
+```{r}
+alpha_even <- alpha %>%
+  mutate(even = shannon / log(richness))
+
+alpha_even
+```
+
+
+# Mean and standard error of evenness grouped by crop over time
+```{r}
+alpha_average <- alpha_even %>%
+  group_by(Crop, Time_Point) %>%
+  summarise(
+    mean.even = mean(even, na.rm = TRUE),
+    n = n(),
+    sd.even = sd(even, na.rm = TRUE),
+    se.even = sd.even / sqrt(n)
+  )
+
+alpha_average
+```
+
+# Calculate differences between Soil and Cotton, and Soil and Soybean
+```{r}
+alpha_average2 <- alpha_average %>%
+  select(Time_Point, Crop, mean.even) %>%
+  pivot_wider(names_from = Crop, values_from = mean.even) %>%
+  mutate(
+    diff.cotton.even = Soil - Cotton,
+    diff.soybean.even = Soil - Soybean
+  )
+
+alpha_average2
+```
+
+# Connect it to plots
+```{r}
+alpha_average2 %>%
+  select(Time_Point, diff.cotton.even, diff.soybean.even) %>%
+  pivot_longer(c(diff.cotton.even, diff.soybean.even), names_to = "diff") %>%
+  ggplot(aes(x = Time_Point, y = value, color = diff)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  theme_classic() +
+  labs(
+    x = "Time (hrs)",
+    y = "Difference from soil in Pielou's evenness",
+    color = "Difference"
+  )
+```
+
+
+# GitHub
+
+my Github repository: 
+
+

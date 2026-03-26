@@ -1,0 +1,369 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Coding challenge 06: Functions and Iterations},
+  pdfauthor={Dulshika Dassanayake},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Coding challenge 06: Functions and Iterations}
+\author{Dulshika Dassanayake}
+\date{2026-03-23}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{Regarding reproducibility, what is the main point of writing
+your own functions and
+iterations?}\label{regarding-reproducibility-what-is-the-main-point-of-writing-your-own-functions-and-iterations}
+
+Writing own functions and iterations helps ensure reproducibility by
+making the analysis systematic and repeatable. Functions allow the same
+set of instructions to be applied consistently each time. Iterations
+automate repeating the same process across multiple datasets or
+variables. This reduces human error and ensures the results can be
+reproduced exactly.
+
+\section{Conceptual:}\label{conceptual}
+
+A function in R is written using the function() command. The inputs
+(arguments) are placed inside the parentheses, and the code that
+performs the calculation is written inside curly brackets \{ \}. The
+function processes the inputs and returns the result using return() or
+by outputting the final value.
+
+A for loop in R is written using the syntax for (i in sequence). The
+loop runs the same block of code repeatedly for each element in the
+sequence. The code inside the curly brackets executes during each
+iteration, and results are typically stored in objects such as vectors
+or data frames.
+
+\section{Read data}\label{read-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(drc) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: MASS
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## 'drc' has been loaded.
+\end{verbatim}
+
+\begin{verbatim}
+## Please cite R and 'drc' if used for a publication,
+\end{verbatim}
+
+\begin{verbatim}
+## for references type 'citation()' and 'citation('drc')'.
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'drc'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     gaussian, getInitial
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.6
+## v forcats   1.0.1     v stringr   1.6.0
+## v lubridate 1.9.4     v tibble    3.3.1
+## v purrr     1.2.1     v tidyr     1.3.2
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## x dplyr::select() masks MASS::select()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{citydata}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{ (}\StringTok{"Cities.csv"}\NormalTok{, }\AttributeTok{na.strings =} \StringTok{"na"}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(citydata)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          city  city_ascii state_id state_name county_fips county_name     lat
+## 1    New York    New York       NY   New York       36081      Queens 40.6943
+## 2 Los Angeles Los Angeles       CA California        6037 Los Angeles 34.1141
+## 3     Chicago     Chicago       IL   Illinois       17031        Cook 41.8375
+## 4       Miami       Miami       FL    Florida       12086  Miami-Dade 25.7840
+## 5     Houston     Houston       TX      Texas       48201      Harris 29.7860
+## 6      Dallas      Dallas       TX      Texas       48113      Dallas 32.7935
+##        long population density
+## 1  -73.9249   18832416 10943.7
+## 2 -118.4068   11885717  3165.8
+## 3  -87.6866    8489066  4590.3
+## 4  -80.2101    6113982  4791.1
+## 5  -95.3885    6046392  1386.5
+## 6  -96.7667    5843632  1477.2
+\end{verbatim}
+
+\section{Function writing}\label{function-writing}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{distance }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(lat1, lon1, lat2, lon2)\{}
+  \CommentTok{\#convert to radians}
+\NormalTok{  rad.lat1 }\OtherTok{\textless{}{-}}\NormalTok{ lat1 }\SpecialCharTok{*}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{180}
+\NormalTok{  rad.lon1 }\OtherTok{\textless{}{-}}\NormalTok{ lon1 }\SpecialCharTok{*}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{180}
+\NormalTok{  rad.lat2 }\OtherTok{\textless{}{-}}\NormalTok{ lat2 }\SpecialCharTok{*}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{180}
+\NormalTok{  rad.lon2 }\OtherTok{\textless{}{-}}\NormalTok{ lon2 }\SpecialCharTok{*}\NormalTok{ pi}\SpecialCharTok{/}\DecValTok{180}
+  
+  \CommentTok{\#Haversine formula}
+\NormalTok{  delta\_lat }\OtherTok{\textless{}{-}}\NormalTok{ rad.lat2 }\SpecialCharTok{{-}}\NormalTok{ rad.lat1}
+\NormalTok{  delta\_lon }\OtherTok{\textless{}{-}}\NormalTok{ rad.lon2 }\SpecialCharTok{{-}}\NormalTok{ rad.lon1}
+\NormalTok{  a }\OtherTok{\textless{}{-}} \FunctionTok{sin}\NormalTok{(delta\_lat }\SpecialCharTok{/} \DecValTok{2}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{+} \FunctionTok{cos}\NormalTok{(rad.lat1) }\SpecialCharTok{*} \FunctionTok{cos}\NormalTok{(rad.lat2) }\SpecialCharTok{*} \FunctionTok{sin}\NormalTok{(delta\_lon }\SpecialCharTok{/} \DecValTok{2}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2}
+\NormalTok{  c }\OtherTok{\textless{}{-}} \DecValTok{2} \SpecialCharTok{*} \FunctionTok{asin}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(a))}
+  
+  \CommentTok{\#Earth\textquotesingle{}s radius in km}
+\NormalTok{  earth\_radius }\OtherTok{\textless{}{-}} \DecValTok{6378137}
+  
+  \CommentTok{\#Calculate the distance}
+\NormalTok{  distance\_km }\OtherTok{\textless{}{-}}\NormalTok{ (earth\_radius }\SpecialCharTok{*}\NormalTok{ c)}\SpecialCharTok{/}\DecValTok{1000}
+  \FunctionTok{return}\NormalTok{(distance\_km)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\section{calculate the distance between Auburn, AL and New York
+City.}\label{calculate-the-distance-between-auburn-al-and-new-york-city.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Au\_NY }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(start, destination)}
+\NormalTok{\{}
+\NormalTok{  cord\_extract }\OtherTok{\textless{}{-}}\NormalTok{ citydata }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(city, lat, long) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(city }\SpecialCharTok{==}\NormalTok{ start }\SpecialCharTok{|}\NormalTok{ city }\SpecialCharTok{==}\NormalTok{ destination) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(city)}
+\FunctionTok{head}\NormalTok{(cord\_extract)}
+\NormalTok{cords }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(cord\_extract}\SpecialCharTok{$}\NormalTok{lat, cord\_extract}\SpecialCharTok{$}\NormalTok{long)}
+\NormalTok{latitude\_1 }\OtherTok{\textless{}{-}}\NormalTok{ cords[[}\DecValTok{1}\NormalTok{]][}\DecValTok{1}\NormalTok{]}
+\NormalTok{latitude\_2 }\OtherTok{\textless{}{-}}\NormalTok{ cords[[}\DecValTok{1}\NormalTok{]][}\DecValTok{2}\NormalTok{]}
+\NormalTok{longitude\_1 }\OtherTok{\textless{}{-}}\NormalTok{ cords[[}\DecValTok{2}\NormalTok{]][}\DecValTok{1}\NormalTok{]}
+\NormalTok{longitude\_2 }\OtherTok{\textless{}{-}}\NormalTok{ cords[[}\DecValTok{2}\NormalTok{]][}\DecValTok{2}\NormalTok{]}
+\FunctionTok{return}\NormalTok{(}\FunctionTok{distance}\NormalTok{(latitude\_1, longitude\_1, latitude\_2, longitude\_2))}
+\NormalTok{\}}
+
+\FunctionTok{Au\_NY}\NormalTok{ (}\StringTok{"New York"}\NormalTok{, }\StringTok{"Auburn"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1367.854
+\end{verbatim}
+
+\section{for loop to calculate the distance between Auburn, AL and every
+other city in
+Cities.csv}\label{for-loop-to-calculate-the-distance-between-auburn-al-and-every-other-city-in-cities.csv}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Au\_to\_cities }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(citydata}\SpecialCharTok{$}\NormalTok{city)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(Au\_to\_cities)) \{}
+\NormalTok{  results }\OtherTok{\textless{}{-}} \FunctionTok{Au\_NY}\NormalTok{(Au\_to\_cities[[i]], }\StringTok{"Auburn"}\NormalTok{ )}
+  \FunctionTok{print}\NormalTok{(results)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1367.854
+## [1] 3051.838
+## [1] 1045.521
+## [1] 916.4138
+## [1] 993.0298
+## [1] 1056.022
+## [1] 1239.973
+## [1] 162.5121
+## [1] 1036.99
+## [1] 1665.699
+## [1] 2476.255
+## [1] 1108.229
+## [1] 3507.959
+## [1] 3388.366
+## [1] 2951.382
+## [1] 1530.2
+## [1] 591.1181
+## [1] 1363.207
+## [1] 1909.79
+## [1] 1380.138
+## [1] 2961.12
+## [1] 2752.814
+## [1] 1092.259
+## [1] 796.7541
+## [1] 3479.538
+## [1] 1290.549
+## [1] 3301.992
+## [1] 1191.666
+## [1] 608.2035
+## [1] 2504.631
+## [1] 3337.278
+## [1] 800.1452
+## [1] 1001.088
+## [1] 732.5906
+## [1] 1371.163
+## [1] 1091.897
+## [1] 1043.273
+## [1] 851.3423
+## [1] 1382.372
+## [1] NA
+\end{verbatim}
+
+\section{Modify loop}\label{modify-loop}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{all\_distances }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{Au\_to\_cities }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(citydata}\SpecialCharTok{$}\NormalTok{city)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(Au\_to\_cities)) \{}
+\NormalTok{  results }\OtherTok{\textless{}{-}} \FunctionTok{Au\_NY}\NormalTok{(Au\_to\_cities[[i]], }\StringTok{"Auburn"}\NormalTok{ )}
+\NormalTok{  distance\_i }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(Au\_to\_cities[[i]], }\StringTok{"Auburn"}\NormalTok{, results)}
+  \FunctionTok{colnames}\NormalTok{(distance\_i) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Destination"}\NormalTok{, }\StringTok{"Origin"}\NormalTok{, }\StringTok{"Distance (Km)"}\NormalTok{)}
+\NormalTok{  all\_distances }\OtherTok{\textless{}{-}} \FunctionTok{rbind.data.frame}\NormalTok{(all\_distances, distance\_i)}
+\NormalTok{\}}
+
+\FunctionTok{head}\NormalTok{(all\_distances)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Destination Origin Distance (Km)
+## 1    New York Auburn     1367.8540
+## 2 Los Angeles Auburn     3051.8382
+## 3     Chicago Auburn     1045.5213
+## 4       Miami Auburn      916.4138
+## 5     Houston Auburn      993.0298
+## 6      Dallas Auburn     1056.0217
+\end{verbatim}
+
+\section{GitHub}\label{github}
+
+Github my Github repository:
+
+\end{document}

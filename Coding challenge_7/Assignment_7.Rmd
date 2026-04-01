@@ -3,10 +3,10 @@ title: 'Coding challenge 7: Linear model'
 author: "Dulshika Dassanayake"
 date: "2026-03-26"
 output: 
-  pdf_document:
-    toc: true
   md_document:
     variant: gfm
+  pdf_document:
+    toc: true
   html_document:
     df_print: paged
   word_document:
@@ -168,7 +168,7 @@ Bars with the same letter are not significantly different
 Bars with different letters and no overlap are significantly different
 
 # Question 6: GitHub
-My GitHub link: 
+My GitHub link: https://github.com/Dulshikamadushani/R-Practice/tree/main/Coding%20challenge_7
 
 
 

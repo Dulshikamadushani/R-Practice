@@ -351,11 +351,10 @@ plot_cldbars_onefactor <- function(lm_model, factor) {
   
   return(plot)
 }
-
 plot_cldbars_onefactor(lm.simple, "Treatment")
 ```
 
-![](Coding_challenge_7_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](Assignment_7_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ## What the letters mean
 
@@ -367,3 +366,4 @@ different letters and no overlap are significantly different
 # Question 6: GitHub
 
 My GitHub link:
+<https://github.com/Dulshikamadushani/R-Practice/tree/main/Coding%20challenge_7>

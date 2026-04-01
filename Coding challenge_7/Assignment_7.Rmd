@@ -1,0 +1,192 @@
+---
+title: 'Coding challenge 7: Linear model'
+author: "Dulshika Dassanayake"
+date: "2026-03-26"
+output: 
+  pdf_document:
+    toc: true
+  md_document:
+    variant: gfm
+  html_document:
+    df_print: paged
+  word_document:
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1: Read the data
+```{r}
+library(tidyverse)
+library(lme4)
+library(emmeans)
+library(multcomp)
+library(multcompView)
+
+STAND <- read.csv("PlantEmergence.csv")
+
+STAND$Treatment <- as.factor(STAND$Treatment)
+STAND$DaysAfterPlanting <- as.factor(STAND$DaysAfterPlanting)
+STAND$Rep <- as.factor(STAND$Rep)
+
+str(STAND)
+```
+
+# Question 2: Fit the full linear model with interaction
+```{r}
+lm.full <- lm(Emergence ~ Treatment * DaysAfterPlanting, data = STAND)
+
+summary(lm.full)
+anova(lm.full)
+```
+
+## the summary of the linear model and ANOVA results:
+
+Main results for the full model
+
+ANOVA
+
+Treatment: highly significant, p < 2e-16
+DaysAfterPlanting: significant, p = 1.88e-05
+Treatment × DaysAfterPlanting: not significant, p = 1.00
+
+What this means
+
+Treatment strongly affects emergence. Days after planting also affects emergence. But the interaction is not significant, so the treatment effect does not appear to change across days after planting.
+
+
+# Question 3: simplified linear model without the interaction term 
+
+Do need the interaction term?
+
+No. Since the interaction term is not significant, should remove it and fit the simpler additive model. If the interaction is not significant, simplify the model.
+
+```{r}
+lm.simple <- lm(Emergence ~ Treatment + DaysAfterPlanting, data = STAND)
+
+summary(lm.simple)
+anova(lm.simple)
+```
+
+## Main results for the simplified model:
+
+ANOVA
+
+Treatment: highly significant, p < 2e-16
+DaysAfterPlanting: significant, p = 1.58e-06
+
+Important coefficients from the simplified model
+
+Intercept = 182.1632
+Treatment2 coefficient = -134.5312
+
+Interpretation of the intercept
+Because R uses the first level as the reference level, the intercept is the predicted emergence for:
+Treatment 1
+DaysAfterPlanting = 7
+
+So, the expected emergence for Treatment 1 at 7 days after planting is about 182.16 plants.
+
+
+Interpretation of the coefficient for Treatment 2
+
+The coefficient for Treatment 2 is -134.53.
+That means, holding DaysAfterPlanting constant, Treatment 2 has about 134.53 fewer emerged plants than Treatment 1, on average.
+
+
+# Question 4: Least-square means for Treatment and Tukey grouping
+```{r}
+lsm.trt <- emmeans(lm.simple, ~ Treatment)
+lsm.trt
+
+cld(lsm.trt, alpha = 0.05, Letters = letters, reversed = TRUE)
+```
+## Interpretation of the Tukey grouping
+
+From the treatment comparisons:
+
+Treatment 2 is much lower than all other treatments.
+Most of the other treatments are not significantly different from one another.
+Treatment 5 is significantly higher than Treatment 7.
+The remaining non-reference treatments mostly overlap statistically.
+
+## Interpretation
+
+Treatments sharing at least one letter are not significantly different.
+Treatments with no letters in common are significantly different.
+
+So:
+
+Treatment 2 stands alone as the worst treatment.
+Treatment 5 is among the highest.
+Treatment 7 is lower than Treatment 5, but not clearly different from several of the other treatments.
+
+# Question 5: Plot with letters
+```{r}
+plot_cldbars_onefactor <- function(lm_model, factor) {
+  data <- lm_model$model
+  variables <- colnames(lm_model$model)
+  dependent_var <- variables[1]
+  independent_var <- variables[2:length(variables)]
+
+  lsmeans <- emmeans(lm_model, as.formula(paste("~", factor)))
+  Results_lsmeans <- cld(lsmeans, alpha = 0.05, reversed = TRUE, details = TRUE, Letters = letters)
+  
+  sig.diff.letters <- data.frame(Results_lsmeans$emmeans[,1], 
+                                 str_trim(Results_lsmeans$emmeans[,7]))
+  colnames(sig.diff.letters) <- c(factor, "Letters")
+  
+  ave_stand2 <- lm_model$model %>%
+    group_by(!!sym(factor)) %>%
+    dplyr::summarize(
+      ave.emerge = mean(.data[[dependent_var]], na.rm = TRUE),
+      se = sd(.data[[dependent_var]]) / sqrt(n())
+    ) %>%
+    left_join(sig.diff.letters, by = factor) %>%
+    mutate(letter_position = ave.emerge + 10 * se)
+  
+  plot <- ggplot(data, aes(x = !! sym(factor), y = !! sym(dependent_var))) + 
+    stat_summary(fun = mean, geom = "bar") +
+    stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.5) +
+    ylab("Number of emerged plants") + 
+    geom_jitter(width = 0.02, alpha = 0.5) +
+    geom_text(data = ave_stand2, aes(label = Letters, y = letter_position), size = 5) +
+    xlab(as.character(factor)) +
+    theme_classic()
+  
+  return(plot)
+}
+plot_cldbars_onefactor(lm.simple, "Treatment")
+```
+
+## What the letters mean
+
+The letters show the Tukey groupings:
+
+Bars with the same letter are not significantly different
+Bars with different letters and no overlap are significantly different
+
+# Question 6: GitHub
+My GitHub link: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

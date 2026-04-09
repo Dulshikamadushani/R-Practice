@@ -242,4 +242,4 @@ To run the project on a different computer:
 This installs the exact package versions listed in the renv.lock file,
 ensuring the project runs the same way on different machines.
 
-# GitHub link:
+# GitHub link: <https://github.com/Dulshikamadushani/R-Practice/tree/main/Bonus%20material>
